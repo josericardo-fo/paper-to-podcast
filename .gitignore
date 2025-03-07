@@ -1,0 +1,7 @@
+output/
+pdfs/
+__pycache__/
+.conda/
+.vscode/
+
+.env

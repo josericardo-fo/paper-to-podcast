@@ -1,0 +1,24 @@
+name: paper-to-podcast
+
+services:
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: p2p-ollama
+  #   ports:
+  #     - 11434:11434
+  #   volumes:
+  #     - ./.ollama:/root/.ollama
+
+  # init-ollama:
+  #   image: ollama/ollama:lateste
+  #   container_name: p2p-ollama-run
+  #   entrypoint: [ "/bin/bash", "-c" ]
+  #   command:
+  #     - "sleep 3; OLLAMA_HOST=ollama:11434 ollama run qwen2.5"
+
+  backend:
+    build: .
+    image: p2p-backend
+    container_name: backend
+    ports:
+      - 8000:8000
