@@ -3,3 +3,5 @@ pdfs/
 __pycache__/
 .conda/
 .vscode/
+
+.DS_Store
