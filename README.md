@@ -47,5 +47,4 @@ python app/main.py
 Para utilizar todas as funcionalidades do Paper to Podcast, você precisa configurar:
 
 1. Chaves de API para os serviços de IA (definidas em variáveis de ambiente)
-2. Preferências de idioma e voz para geração de áudio
-As configurações podem ser ajustadas no arquivo config.py.
+2. Preferências de idioma e voz para geração de áudio. As configurações podem ser ajustadas no arquivo `config.py`.
