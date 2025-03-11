@@ -1,11 +1,10 @@
-import shutil
-from datetime import datetime
 from pathlib import Path
 from typing import List
 
 from config import PDF_DIR
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.documents import Document
+from utils.file_manager import FileManager
 
 
 class PDFProcessor:
@@ -17,7 +16,7 @@ class PDFProcessor:
     @staticmethod
     def get_all_pdfs() -> List[Path]:
         """Retorna lista de todos os PDFs armazenados."""
-        return list(PDF_DIR.glob("*.pdf"))
+        return FileManager.list_files(PDF_DIR, "pdf")
 
     @staticmethod
     def save_pdf(filepath: str) -> Path:
@@ -25,13 +24,7 @@ class PDFProcessor:
         Salva um PDF no diretório de PDFs.
         Retorna o caminho do arquivo salvo.
         """
-        source_path = Path(filepath)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        dest_filename = f"{timestamp}_{source_path.name}"
-        dest_path = PDF_DIR / dest_filename
-
-        shutil.copy2(source_path, dest_path)
-        return dest_path
+        return FileManager.save_file(filepath, PDF_DIR, rename=True)
 
     @staticmethod
     def extract_text(pdf_path: Path) -> List[Document]:
@@ -49,11 +42,4 @@ class PDFProcessor:
     @staticmethod
     def get_pdf_metadata(pdf_path: Path) -> dict:
         """Extrai metadados do PDF."""
-        # Implementar extração de metadados quando necessário
-        return {
-            "filename": pdf_path.name,
-            "size_kb": round(pdf_path.stat().st_size / 1024, 2),
-            "created_date": datetime.fromtimestamp(pdf_path.stat().st_ctime).strftime(
-                "%Y-%m-%d %H:%M:%S"
-            ),
-        }
+        return FileManager.get_file_metadata(pdf_path)

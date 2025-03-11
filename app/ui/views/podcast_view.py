@@ -219,22 +219,14 @@ class PodcastView(ttk.Frame):
         except Exception as e:
             self.status_var.set(f"Erro ao reproduzir: {str(e)}")
 
-    def _open_podcast_folder(self):
-        """Abre a pasta onde os podcasts estão salvos."""
-        import platform
-        import subprocess
 
-        from app.config import PODCAST_DIR
+def _open_podcast_folder(self):
+    """Abre a pasta onde os podcasts estão salvos."""
+    from utils.file_manager import FileManager
 
-        try:
-            if platform.system() == "Darwin":  # macOS
-                subprocess.Popen(["open", str(PODCAST_DIR)])
-            elif platform.system() == "Windows":
-                os.startfile(str(PODCAST_DIR))
-            else:  # Linux
-                subprocess.Popen(["xdg-open", str(PODCAST_DIR)])
-        except Exception as e:
-            self.status_var.set(f"Erro ao abrir pasta: {str(e)}")
+    from app.config import PODCAST_DIR
+
+    FileManager.open_directory(PODCAST_DIR)
 
     def _load_available_voices(self):
         """Carrega as vozes disponíveis da API ElevenLabs."""

@@ -8,6 +8,7 @@ from core.pdf_processor import PDFProcessor
 from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
 from langchain_core.documents import Document
+from utils.text_processor import TextProcessor
 
 
 class Summarizer:
@@ -17,6 +18,7 @@ class Summarizer:
 
     def __init__(self):
         self.llm = llm
+        self.text_processor = TextProcessor()
 
     def create_summary(
         self, pdf_path: Path, chunks: List[Document] = None
@@ -81,6 +83,8 @@ class Summarizer:
         summary = chain.invoke(chunks)
         execution_time = time.time() - start_time
 
+        keywords = self.text_processor.extract_keywords(summary["output_text"])
+
         result = {
             "summary": summary["output_text"],
             "metadata": {
@@ -88,6 +92,7 @@ class Summarizer:
                 "chunks_processed": len(chunks),
                 "execution_time_seconds": round(execution_time, 2),
                 "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "keywords": keywords,
             },
         }
 

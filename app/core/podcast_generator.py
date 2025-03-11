@@ -4,6 +4,7 @@ from typing import Any, Dict, Optional
 
 import requests
 from config import ELEVEN_LABS_API_KEY, PODCAST_DIR
+from utils.text_processor import TextProcessor
 
 
 class PodcastGenerator:
@@ -31,6 +32,9 @@ class PodcastGenerator:
         Returns:
             Dicionário com informações sobre o podcast gerado
         """
+
+        formatted_text = TextProcessor.format_for_tts(text)
+
         url = f"{self.base_url}/text-to-speech/{voice_id}/stream"
 
         headers = {
@@ -40,7 +44,7 @@ class PodcastGenerator:
         }
 
         data = {
-            "text": text,
+            "text": formatted_text,
             "model_id": "eleven_multilingual_v2",
             "voice_settings": {
                 "stability": 0.5,
@@ -56,9 +60,9 @@ class PodcastGenerator:
             response = requests.post(url, json=data, headers=headers)
             response.raise_for_status()
 
-            # Gerar nome de arquivo único baseado no timestamp
             timestamp = time.strftime("%Y%m%d_%H%M%S")
-            audio_path = PODCAST_DIR / f"podcast_{timestamp}.mp3"
+            filename = TextProcessor.sanitize_filename(text[:30])
+            audio_path = PODCAST_DIR / f"podcast_{timestamp}_{filename}.mp3"
 
             with open(audio_path, "wb") as f:
                 f.write(response.content)
