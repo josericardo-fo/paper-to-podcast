@@ -1,50 +1,90 @@
-# Paper to Podcast
+# 🎧 Paper to Podcast
 
-## Descrição
+## 📝 Descrição
 
-Paper to Podcast é uma aplicação que converte artigos acadêmicos (PDFs) em formato de áudio, permitindo que você consuma conteúdo científico em formato de podcast. A aplicação extrai texto de arquivos PDF, gera um resumo utilizando técnicas de IA através do LangChain e converte o resumo em áudio.
+Paper to Podcast é uma aplicação que transforma artigos acadêmicos (PDFs) em conteúdo de áudio, permitindo que pesquisadores e estudantes consumam conteúdo científico em formato de podcast. A aplicação utiliza processamento de linguagem natural para extrair e resumir o conteúdo dos artigos, e tecnologia text-to-speech para gerar áudios de alta qualidade.
 
-## Funcionalidades
+## ✨ Funcionalidades
 
-- Carregamento e processamento de arquivos PDF
-- Extração inteligente de texto de artigos acadêmicos
-- Sumarização automática usando LangChain
-- Conversão de texto para áudio (TTS)
-- Interface gráfica amigável construída com CustomTkinter
+- 🔍 Extração inteligente de texto com suporte a formatação acadêmica
+- 🤖 Sumarização automática usando LLMs via LangChain
+- 🔊 Conversão de texto para áudio com ajustes de velocidade e tom
+- 📱 API RESTful para integração com outros sistemas
 
-## Instalação
+## 🚀 Começando
 
-- Utilizando Docker (recomendado)
+### Pré-requisitos
+
+- Docker (para instalação com containers)
+- Chave de API da OpenAI
+
+### Instalação com Docker
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/paper-to-podcast.git
+git clone https://github.com/josericardo-fo/paper-to-podcast.git
 cd paper-to-podcast
 
-# Construa a imagem Docker
-docker build -t paper-to-podcast .
+# Configure as variáveis de ambiente
+cp .env.example .env
+# Edite o arquivo .env com sua chave da OpenAI
 
-# Execute a aplicação
+# Execute com Docker Compose
+docker-compose build
 docker-compose up
 ```
 
-## Instalação Local
+## 🔧 Configuração
 
-```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/paper-to-podcast.git
-cd paper-to-podcast
+Para utilizar todas as funcionalidades do Paper to Podcast, configure:
 
-# Instale as dependências
-pip install -r requirements.txt
+1. **Variáveis de ambiente**:
+   - `OPENAI_API_KEY`: Sua chave API da OpenAI
+   - `OPENAI_MODEL`: Modelo a ser usado (padrão: "gpt-4o-mini")
 
-# Execute a aplicação
-python app/main.py
+2. **Diretórios de Trabalho**:
+   - `/pdfs`: Armazena os PDFs enviados
+   - `/output/summaries`: Armazena os resumos gerados
+   - `/output/podcasts`: Armazena os arquivos de áudio
+
+## 🖥️ Uso da API
+
+### Endpoints Principais
+
+- `POST /upload` - Faz upload de um arquivo PDF
+- `GET /pdfs` - Lista todos os PDFs disponíveis
+- `POST /summarize/{pdf_name}` - Gera um resumo de um PDF específico
+  - Parâmetros: `method` (stuff/map_reduce), `remove_references` (true/false)
+
+### Exemplo de Utilização
+
+```python
+import requests
+
+# Upload de um PDF
+with open('artigo.pdf', 'rb') as f:
+    response = requests.post('http://localhost:8000/upload', files={'file': f})
+    pdf_name = response.json()['filename']
+
+# Geração de resumo
+response = requests.post(
+    f'http://localhost:8000/summarize/{pdf_name}',
+    data={'method': 'map_reduce', 'remove_references': 'true'}
+)
+print(response.json()['summary'])
 ```
 
-## Configuração
+## 🛠️ Tecnologias Utilizadas
 
-Para utilizar todas as funcionalidades do Paper to Podcast, você precisa configurar:
+- [FastAPI](https://fastapi.tiangolo.com/) - Framework web para criação de APIs
+- [LangChain](https://langchain.ai/) - Framework para aplicações com LLMs
+- [PyPDF2](https://github.com/py-pdf/PyPDF2) - Biblioteca para processamento de PDFs
+- [OpenAI API](https://openai.com/api/) - Modelos de linguagem para resumos
 
-1. Chaves de API para os serviços de IA (definidas em variáveis de ambiente)
-2. Preferências de idioma e voz para geração de áudio. As configurações podem ser ajustadas no arquivo `config.py`.
+## 📄 Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
