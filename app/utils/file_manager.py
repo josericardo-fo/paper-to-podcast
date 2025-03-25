@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Union
 
-from config import PDF_DIR, PODCAST_DIR, SUMMARY_DIR
+# from config import PDF_DIR, PODCAST_DIR, SUMMARY_DIR
 
 
 class FileManager:
@@ -13,13 +13,13 @@ class FileManager:
     Fornece métodos para manipular e organizar arquivos do aplicativo.
     """
 
-    @staticmethod
-    def ensure_directories() -> None:
-        """
-        Garante que os diretórios necessários para o aplicativo existem.
-        """
-        for dir_path in [PDF_DIR, SUMMARY_DIR, PODCAST_DIR]:
-            dir_path.mkdir(parents=True, exist_ok=True)
+    # @staticmethod
+    # def ensure_directories() -> None:
+    #     """
+    #     Garante que os diretórios necessários para o aplicativo existem.
+    #     """
+    #     for dir_path in [PDF_DIR, SUMMARY_DIR, PODCAST_DIR]:
+    #         dir_path.mkdir(parents=True, exist_ok=True)
 
     @staticmethod
     def list_files(directory: Path, extension: str = "") -> List[Path]:

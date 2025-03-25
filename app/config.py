@@ -17,17 +17,12 @@ PDF_DIR.mkdir(exist_ok=True, parents=True)
 SUMMARY_DIR.mkdir(exist_ok=True, parents=True)
 PODCAST_DIR.mkdir(exist_ok=True, parents=True)
 
-# API Keys
+# Configuração da OpenAI
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-ELEVEN_LABS_API_KEY = os.getenv("ELEVEN_LABS_API_KEY")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 # Configuração de LLM
 llm = ChatOpenAI(
-    model="gpt-4o-mini",
-    api_key=OPENAI_API_KEY,
+    model=OPENAI_MODEL,
+    openai_api_key=OPENAI_API_KEY,
 )
-
-# Configurações da interface
-UI_THEME = "dark"  # ou "light"
-UI_DEFAULT_WIDTH = 800
-UI_DEFAULT_HEIGHT = 600
